@@ -59,7 +59,7 @@ jobs:
           
       - name: Set Kernel Environment Variables
         run: |
-            echo "KERNEL_TREE_BRANCH=${{ github.event.inputs.KERNEL_TREE_BRANCH }}" >> $GITHUB_ENV ;;
+            echo "KERNEL_TREE_BRANCH=${{ github.event.inputs.KERNEL_TREE_BRANCH }}" >> $GITHUB_ENV
           
       - name: Checkout Kernel via PAT
         env:
