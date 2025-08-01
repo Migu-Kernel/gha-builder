@@ -110,9 +110,12 @@ jobs:
           cd kernel_tree
           make O=out alioth_defconfig vendor/xiaomi/migu-common.config
           make O=out CC=clang -j$(nproc --all) CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1
-          mv out/arch/arm64/boot/dtbo.img ../dtbo.img
-          mv out/arch/arm64/boot/dtb ../dtb
-          cp out/arch/arm64/boot/Image.gz ../Image.gz
+          # mv out/arch/arm64/boot/dtbo.img ../dtbo.img
+          # mv out/arch/arm64/boot/dtb ../dtb
+          # cp out/arch/arm64/boot/Image.gz ../Image.gz
+          find $DTS -name '*.dtb' -exec cat {} + > ../dtb
+          find $DTS -name 'Image' -exec cat {} + > ../Image.gz
+          find $DTS -name 'dtbo.img' -exec cat {} + > ../dtbo.img
 
       - name: Upload Kernel Artifacts
         uses: actions/upload-artifact@v4
