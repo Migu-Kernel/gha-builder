@@ -86,10 +86,10 @@ jobs:
           https://x-access-token:${GH_PAT}@github.com/Migu-Kernel/kernel_xiaomi_sm8250.git \
           kernel_tree
 
-      - name: Change different battery type
-        run: |
-          cd kernel_tree
-          sed -i -e '/qcom,j3s-batt-profile;/d' arch/arm64/boot/dts/vendor/qcom/alioth-sm8250.dtsi
+      # - name: Change different battery type (BACK TO NORMAL)
+      #   run: |
+      #     cd kernel_tree
+      #     sed -i -e '/qcom,j3s-batt-profile;/d' arch/arm64/boot/dts/vendor/qcom/alioth-sm8250.dtsi
       
       - name: Kernel Version
         run: |
@@ -98,22 +98,22 @@ jobs:
             sed -i -e 's/CONFIG_LOCALVERSION="-Migu"/CONFIG_LOCALVERSION="${{ github.event.inputs.CUSTOM_SED }}"/' arch/arm64/configs/vendor/xiaomi/migu-common.config
           fi
       
-      - name: Apply Patches
-        run: |
-          cd kernel_tree
-          mkdir -p KernelSU-Next
-          bash nextpatch.sh
+      # - name: Apply Patches
+      #   run: |
+      #     cd kernel_tree
+      #     mkdir -p KernelSU-Next
+      #     bash nextpatch.sh
           
-      - name: Apply Modifications (if modified build)
-        run: |
-          cd kernel_tree
-          # sed -i -e '/<2553600>,/c\<2553600>;' arch/arm64/boot/dts/vendor/qcom/kona.dtsi
-          # sed -i -e '/<2649600>,/c\//<2649600>,' arch/arm64/boot/dts/vendor/qcom/kona.dtsi
-          # sed -i -e '/<2745600>,/c\//<2745600>,' arch/arm64/boot/dts/vendor/qcom/kona.dtsi
-          # sed -i -e '/<2841600>,/c\//<2841600>,' arch/arm64/boot/dts/vendor/qcom/kona.dtsi
-          # sed -i -e '/<3187200>;/c\//<3187200>;' arch/arm64/boot/dts/vendor/qcom/kona.dtsi
-          sed -i -e 's/qcom,mdss-pan-physical-width-dimension = <70>;/qcom,mdss-pan-physical-width-dimension = <700>;/' arch/arm64/boot/dts/vendor/qcom/dsi-panel-k11a-38-08-0a-dsc-cmd.dtsi
-          sed -i -e 's/qcom,mdss-pan-physical-height-dimension = <155>;/qcom,mdss-pan-physical-height-dimension = <1540>;/' arch/arm64/boot/dts/vendor/qcom/dsi-panel-k11a-38-08-0a-dsc-cmd.dtsi
+      # - name: Apply Modifications (if modified build)
+      #   run: |
+      #     cd kernel_tree
+      #     # sed -i -e '/<2553600>,/c\<2553600>;' arch/arm64/boot/dts/vendor/qcom/kona.dtsi
+      #     # sed -i -e '/<2649600>,/c\//<2649600>,' arch/arm64/boot/dts/vendor/qcom/kona.dtsi
+      #     # sed -i -e '/<2745600>,/c\//<2745600>,' arch/arm64/boot/dts/vendor/qcom/kona.dtsi
+      #     # sed -i -e '/<2841600>,/c\//<2841600>,' arch/arm64/boot/dts/vendor/qcom/kona.dtsi
+      #     # sed -i -e '/<3187200>;/c\//<3187200>;' arch/arm64/boot/dts/vendor/qcom/kona.dtsi
+      #     sed -i -e 's/qcom,mdss-pan-physical-width-dimension = <70>;/qcom,mdss-pan-physical-width-dimension = <700>;/' arch/arm64/boot/dts/vendor/qcom/dsi-panel-k11a-38-08-0a-dsc-cmd.dtsi
+      #     sed -i -e 's/qcom,mdss-pan-physical-height-dimension = <155>;/qcom,mdss-pan-physical-height-dimension = <1540>;/' arch/arm64/boot/dts/vendor/qcom/dsi-panel-k11a-38-08-0a-dsc-cmd.dtsi
       
       - name: Build Kernel
         run: |
