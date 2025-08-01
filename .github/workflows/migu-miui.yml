@@ -124,7 +124,7 @@ jobs:
           path: |
             dtbo.img
             dtb
-            Image.gz
+            Image
 
   package_anykernel:
     needs: build
@@ -147,7 +147,7 @@ jobs:
       - name: Define ZIP Name
         run: |
           COMPILED_DATE=$(date +%Y%m%d)
-          echo "ZIP_NAME=Migu-${{ github.event.inputs.CODENAME }}-$COMPILED_DATE]" >> $GITHUB_ENV
+          echo "ZIP_NAME=Migu-${{ github.event.inputs.CODENAME }}-$COMPILED_DATE" >> $GITHUB_ENV
       
       - name: Upload Flashable Kernel Zip
         uses: actions/upload-artifact@v4
