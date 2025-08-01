@@ -111,7 +111,7 @@ jobs:
           make O=out alioth_defconfig vendor/xiaomi/migu-common.config
           make O=out CC=clang -j$(nproc --all) CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1
           mv out/arch/arm64/boot/dtbo.img ../dtbo.img
-          mv out/arch/arm64/boot/dtb.img ../dtb
+          mv out/arch/arm64/boot/dtb ../dtb
           cp out/arch/arm64/boot/Image.gz ../Image.gz
 
       - name: Upload Kernel Artifacts
