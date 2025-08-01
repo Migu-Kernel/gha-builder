@@ -33,6 +33,10 @@ on:
         description: 'default=neutron, write aosp for aosp 20 clang, zyc for zycromerz'
         default: 'zyc'
         required: false
+      GCC:
+        description: 'Use LinageOS GCC prebuilts'
+        default: 'true'
+        required: false
 
 jobs:
   build:
@@ -60,6 +64,14 @@ jobs:
             unzstd -d clang.tar.zst
             tar -xf clang.tar -C clang
           fi
+
+      - name: Seting up GCC
+        if: inputs.GCC == 'true'
+        run: |
+          git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 arm-linux-androideabi-4.9
+          export PATH="$(pwd)/arm-linux-androideabi-4.9/bin:$PATH"
+          git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 aarch64-linux-android-4.9
+          export PATH="$(pwd)/aarch64-linux-android-4.9/bin:$PATH"
           
       - name: Set Kernel Environment Variables
         run: |
@@ -114,7 +126,7 @@ jobs:
           export CROSS_COMPILE_COMPAT=arm-linux-gnueabi-
           cd kernel_tree
           make O=out alioth_defconfig vendor/xiaomi/migu-common.config
-          make O=out CC="ccache clang" -j$(nproc --all) HOSTCC=gcc LD=ld.lld AS=llvm-as AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip LLVM=1 LLVM_IAS=1 CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1
+          make O=out CC=clang -j$(nproc --all) HOSTCC=gcc LD=ld.lld AS=llvm-as AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip LLVM=1 LLVM_IAS=1 CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1
           # mv out/arch/arm64/boot/dtbo.img ../dtbo.img
           # mv out/arch/arm64/boot/dtb ../dtb
           # cp out/arch/arm64/boot/Image.gz ../Image.gz
